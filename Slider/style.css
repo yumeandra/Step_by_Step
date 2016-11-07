@@ -1,0 +1,18 @@
+#slideshow {
+    margin: 20% 33%;
+    position: relative;
+    width: 100vw;
+    height: 100wh;
+    padding: 10%;
+   
+}
+
+#slideshow div {
+    position: absolute;
+    top: 2%;
+    left: 2%;
+    right: 2%;
+    bottom: 2%;
+    
+}
+
