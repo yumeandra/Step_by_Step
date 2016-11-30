@@ -1,0 +1,73 @@
+<!DOCTYPE HTML/>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta lang="en-UK" />
+    <title>HTML Canvas - game exercise</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+            canvas {
+            border: 1px solid #d3d3d3;
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+
+<body onload="startGame()">
+    <script>
+        function startGame() {
+            myGameArea.start(); //canvas appears (function below)
+            myGamePiece = new component(30, 30, "lightgreen", 10, 120); //red square appears (function below), here the component properties may be changed: its size, color, position
+            redGamePiece = new component(35, 35, "red", 10, 10); //new components added
+            yellowGamePiece = new component(35, 35, "yellow", 50, 60); 
+            blueGamePiece = new component(35, 35, "blue", 10, 110);
+        }
+
+        //preparing an empty canvas
+        var myGameArea = {
+            canvas: document.createElement("canvas"),
+            start: function () {
+                this.canvas.width = 480;
+                this.canvas.height = 270;
+                this.context = this.canvas.getContext("2d");
+                document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+                this.interval = setInterval(updateGameArea, 20);//canvas updated 50 times / minute
+                },
+                clear : function() {
+                    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height); //canvas cleared
+            }
+        }
+        
+        //preparing an element (component) recipe (function call above)
+        function component(width, height, color, x, y) {
+            this.width = width;
+            this.height = height;
+            this.x = x;
+            this.y = y; 
+            this.update = function() {
+                ctx = myGameArea.context;
+                ctx.fillStyle = color;
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+            }
+            
+        }
+        
+        //canvas updated - canvas is cleared and then updated; it's 50 times / minute, so nobody is able to see an empty canvas
+        function updateGameArea() {
+            myGameArea.clear();
+            myGamePiece.x += 1;
+            redGamePiece.x += 1;
+            yellowGamePiece.x += 1; 
+            yellowGamePiece.y += 1; 
+            blueGamePiece.x += 1; 
+            blueGamePiece.y -= 1; 
+            myGamePiece.update();
+            redGamePiece.update();
+            yellowGamePiece.update();
+            blueGamePiece.update();
+        }
+    </script>
+</body>
+
+</html>
