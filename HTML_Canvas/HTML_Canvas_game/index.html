@@ -43,6 +43,8 @@
         function component(width, height, color, x, y) {
             this.width = width;
             this.height = height;
+            this.speedX = 0;
+            this.speedY = 0;
             this.x = x;
             this.y = y; 
             this.update = function() {
@@ -50,24 +52,58 @@
                 ctx.fillStyle = color;
                 ctx.fillRect(this.x, this.y, this.width, this.height);
             }
+            this.newPos = function() {
+                this.x += this.speedX;
+                this.y += this.speedY; 
+            } 
             
         }
         
         //canvas updated - canvas is cleared and then updated; it's 50 times / minute, so nobody is able to see an empty canvas
         function updateGameArea() {
             myGameArea.clear();
-            myGamePiece.x += 1;
-            redGamePiece.x += 1;
-            yellowGamePiece.x += 1; 
-            yellowGamePiece.y += 1; 
-            blueGamePiece.x += 1; 
-            blueGamePiece.y -= 1; 
+            myGamePiece.newPos();
+            //below automatic moves of the components, but they are not needed anymore since controllers are moving in
+//            myGamePiece.x += 1;
+//            redGamePiece.x += 1;
+//            yellowGamePiece.x += 1; 
+//            yellowGamePiece.y += 1; 
+//            blueGamePiece.x += 1; 
+//            blueGamePiece.y -= 1; 
             myGamePiece.update();
             redGamePiece.update();
             yellowGamePiece.update();
             blueGamePiece.update();
         }
+        
+        //these functions enable only one element to move
+        function moveup() {
+            myGamePiece.speedY -= 1; 
+        }
+
+        function movedown() {
+            myGamePiece.speedY += 1; 
+        }
+
+        function moveleft() {
+            myGamePiece.speedX -= 1;
+        }
+
+        function moveright() {
+            myGamePiece.speedX += 1;
+        }
+        
+        //this function stops the moving element
+        function stopMove() {
+            myGamePiece.speedX = 0;
+            myGamePiece.speedY = 0; 
+        }
     </script>
+    
+    <button onclick="moveup()" onmouseup="stopMove()" ontouchstart="moveup()">UP</button>
+    <button onclick="movedown()" onmouseup="stopMove()" ontouchstart="movedown()">DOWN</button>
+    <button onclick="moveleft()" onmouseup="stopMove()" ontouchstart="moveleft()">LEFT</button>
+    <button onclick="moveright()" onmouseup="stopMove()" ontouchstart="moveright()">RIGHT</button>
 </body>
 
 </html>
