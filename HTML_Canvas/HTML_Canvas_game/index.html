@@ -16,12 +16,21 @@
 
 <body onload="startGame()">
     <script>
+        
+        var myObstacles = [];
+        var myGamePiece;
+        var myScore;
+        
         function startGame() {
             myGameArea.start(); //canvas appears (function below)
-            myGamePiece = new component(30, 30, "lightgreen", 10, 120); //red square appears (function below), here the component properties may be changed: its size, color, position
-            redGamePiece = new component(35, 35, "red", 10, 10); //new components added
-            yellowGamePiece = new component(35, 35, "yellow", 50, 60); 
-            blueGamePiece = new component(35, 35, "blue", 10, 110);
+//            myGamePiece = new component(30, 30, "lightgreen", 10, 120); //red square appears (function below), here the component properties may be changed: its size, color, position
+//            redGamePiece = new component(35, 35, "red", 10, 10); //new components added
+//            yellowGamePiece = new component(35, 35, "yellow", 50, 60); 
+//            blueGamePiece = new component(35, 35, "blue", 10, 110);
+            myGamePiece = new component(49, 49, "http://icons.iconarchive.com/icons/blackvariant/button-ui-requests-15/32/Lossless-Decoder-icon.png", 10, 120, "image"); //image instead of rectangular (W, H, "src", x, y, "type")
+            myObstacle = new component(10, 200, "red", 400, 120); 
+            myScore = new component("30px", "Consolas", "black", 280, 40, "text");
+            
         }
 
         //preparing an empty canvas
@@ -32,15 +41,37 @@
                 this.canvas.height = 270;
                 this.context = this.canvas.getContext("2d");
                 document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+                this.frameNo = 0; 
                 this.interval = setInterval(updateGameArea, 20);//canvas updated 50 times / minute
+                window.addEventListener('keydown', function (e) {
+                        myGameArea.key = e.keyCode;
+                    })
+                window.addEventListener('keyup', function (e) {
+                        myGameArea.key = false;
+                    });
                 },
                 clear : function() {
                     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height); //canvas cleared
-            }
+                },
+                stop: function() {
+                    clearInterval(this.interval);
+                }
         }
         
+        //a property for counting frames, and a method for execute something at a given frame rate
+        function everyinterval(n) {
+            if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
+            return false;
+        }
+        
+        
         //preparing an element (component) recipe (function call above)
-        function component(width, height, color, x, y) {
+        function component(width, height, color, x, y, type) {
+            this.type = type;
+            if (type == "image") {
+                this.image = new Image();
+                this.image.src = color;
+              }
             this.width = width;
             this.height = height;
             this.speedX = 0;
@@ -49,31 +80,115 @@
             this.y = y; 
             this.update = function() {
                 ctx = myGameArea.context;
+                if (type == "image") {
+                  ctx.drawImage(this.image, 
+                    this.x, 
+                    this.y,
+                    this.width, this.height);
+                } else {
+                    ctx.fillStyle = color;
+                    ctx.fillRect(this.x, this.y, this.width, this.height);
+                }
+                if (this.type == "text") {
+                  ctx.font = this.width + " " + this.height;
+                  ctx.fillStyle = color;
+                  ctx.fillText(this.text, this.x, this.y);
+                } else {
                 ctx.fillStyle = color;
                 ctx.fillRect(this.x, this.y, this.width, this.height);
+                }
             }
             this.newPos = function() {
                 this.x += this.speedX;
                 this.y += this.speedY; 
             } 
+            this.crashWith = function(otherobj) {
+                var myleft = this.x;
+                var myright = this.x + (this.width);
+                var mytop = this.y;
+                var mybottom = this.y + (this.height);
+                var otherleft = otherobj.x;
+                var otherright = otherobj.x + (otherobj.width);
+                var othertop = otherobj.y;
+                var otherbottom = otherobj.y + (otherobj.height);
+                var crash = true;
+                if ((mybottom < othertop) ||
+                       (mytop > otherbottom) ||
+                       (myright < otherleft) ||
+                       (myleft > otherright)) {
+                   crash = false;
+                }
+                return crash;
+            }
             
         }
         
         //canvas updated - canvas is cleared and then updated; it's 50 times / minute, so nobody is able to see an empty canvas
+//        function updateGameArea() {
+//            if (myGamePiece.crashWith(myObstacle)) {
+//                myGameArea.stop(); //if a suare touches an obstacle gameArea stops
+//            } else {
+//                myGameArea.clear();
+//                //moving components using arrow keys in a keyboard (when this is active, mouse events don't work):
+//    //            myGamePiece.speedX = 0;
+//    //            myGamePiece.speedY = 0; 
+//    //            if (myGameArea.key && myGameArea.key == 37) {myGamePiece.speedX = -1; }
+//    //            if (myGameArea.key && myGameArea.key == 39) {myGamePiece.speedX = 1; }
+//    //            if (myGameArea.key && myGameArea.key == 38) {myGamePiece.speedY = -1; }
+//    //            if (myGameArea.key && myGameArea.key == 40) {myGamePiece.speedY = 1; }
+//                myObstacle.x += -1; //the obstacle is moving left
+//                myObstacle.update();
+//                myGamePiece.newPos();
+//                //below automatic moves of the components, but they are not needed anymore since controllers are pluged in
+//    //            myGamePiece.x += 1;
+//    //            redGamePiece.x += 1;
+//    //            yellowGamePiece.x += 1; 
+//    //            yellowGamePiece.y += 1; 
+//    //            blueGamePiece.x += 1; 
+//    //            blueGamePiece.y -= 1; 
+//                myGamePiece.update();
+//    //            redGamePiece.update();
+//    //            yellowGamePiece.update();
+//    //            blueGamePiece.update();
+//            }
+//        }
+        
+        //upadating gameArea function for multiply obstacles:
         function updateGameArea() {
+            var x, y;
+            for (i = 0; i < myObstacles.length; i += 1) {
+                if (myGamePiece.crashWith(myObstacles[i])) {
+                    myGameArea.stop();
+                    return;
+                } 
+            }
             myGameArea.clear();
-            myGamePiece.newPos();
-            //below automatic moves of the components, but they are not needed anymore since controllers are moving in
-//            myGamePiece.x += 1;
-//            redGamePiece.x += 1;
-//            yellowGamePiece.x += 1; 
-//            yellowGamePiece.y += 1; 
-//            blueGamePiece.x += 1; 
-//            blueGamePiece.y -= 1; 
+            myGameArea.frameNo += 1;
+            
+//            if (myGameArea.frameNo == 1 || everyinterval(150)) {
+//                x = myGameArea.canvas.width;
+//                y = myGameArea.canvas.height - 200
+//                myObstacles.push(new component(10, 200, "green", x, y));
+//            }
+            if (myGameArea.frameNo == 1 || everyinterval(150)) {
+                x = myGameArea.canvas.width;
+                minHeight = 20;
+                maxHeight = 200;
+                height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
+                minGap = 50;
+                maxGap = 200;
+                gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);
+                myObstacles.push(new component(10, height, "green", x, 0));
+                myObstacles.push(new component(10, x - height - gap, "green", x, height + gap));
+            }
+            for (i = 0; i < myObstacles.length; i += 1) {
+                myObstacles[i].x += -1;
+                myObstacles[i].update();
+            }
+            myScore.text="SCORE: " + myGameArea.frameNo;
+            myScore.update();
+            myGamePiece.newPos(); 
             myGamePiece.update();
-            redGamePiece.update();
-            yellowGamePiece.update();
-            blueGamePiece.update();
         }
         
         //these functions enable only one element to move
@@ -98,6 +213,8 @@
             myGamePiece.speedX = 0;
             myGamePiece.speedY = 0; 
         }
+        
+        
     </script>
     
     <button onclick="moveup()" onmouseup="stopMove()" ontouchstart="moveup()">UP</button>
