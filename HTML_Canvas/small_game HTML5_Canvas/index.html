@@ -1,0 +1,121 @@
+<!DOCTYPE HTML/>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta lang="en-UK" />
+    <title>small_game_online</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<!--    <script src="app.js" type="text/javascript"></script>-->
+</head>
+
+<body onload="startGame()">
+    
+    <script>
+        
+        //variables to declare:
+        var symbolImage, gameInformation, symbolList, spinButton, fruitNames, background;
+     
+        
+        function startGame() {
+            
+            //gameArea starts:
+            myGameArea.start();
+            
+            //components:
+            symbolImage = new component(235, 155, "strawberry.jpg", 70, 200, "image");
+            
+            gameInformation = new component(235, 155, "gold", 310, 200);
+            
+            symbolList = new component(234, 155, "white", 554, 200);
+            
+            fruitNames = new component("30px", "serif", "black", 600, 130, "text");
+            
+            spinButton = new component(98, 98, "spin_button.png", 824, 220, "image");
+            
+            background = new component(960, 536, "bg.jpg", 0, 0, "image");
+            
+        }
+        
+        //this is what the gameArea does:
+        var myGameArea = {
+            
+            //canvas is created:
+            canvas : document.createElement("canvas"),
+            start : function() {
+                this.canvas.width = 960;
+                this.canvas.height = 536;
+                this.context = this.canvas.getContext("2d");
+                document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+                this.interval = setInterval(updateGameArea, 500);
+            },
+            
+            clear : function() {
+                this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+            }
+            
+            
+        }
+        
+        //this is what happens with components duting the game:
+        function component(width, height, color, x, y, type) {
+            this.type = type;
+            
+            if (type == "image") {
+                this.image = new Image();
+                this.image.src = color;
+            }
+            
+            this.width = width;
+            this.height = height;
+            this.x = x;
+            this.y = y;
+            this.update = function() {
+                
+                ctx = myGameArea.context;
+                
+                //ifs - for special component types like "text" and "image":
+                if (this.type == "text") {
+                    ctx.font = this.width + " " + this.height;
+                    ctx.fillStyle = color;
+                    ctx.fillText(this.text, this.x, this.y);
+                } else if (type == "image") {
+                    ctx.drawImage(this.image, 
+                    this.x, 
+                    this.y,
+                    this.width, this.height);
+                } else {
+                    ctx.fillStyle = color;
+                    ctx.fillRect(this.x, this.y, this.width, this.height);
+                }
+                
+                
+            }
+           
+        }
+       
+        //updating gameArea (every 500ms):
+        function updateGameArea() {
+            
+            myGameArea.clear();
+//            background.newPos();
+            background.update();
+            
+            fruitNames.text = "fruits to choose of";
+            fruitNames.update();
+            
+            symbolImage.update();
+            gameInformation.update();
+            symbolList.update();
+            spinButton.update();
+        }
+    
+    </script>
+    
+    <p>
+        Press the spin button to start your game.
+    </p>
+</body>
+</html>
