@@ -1,0 +1,149 @@
+
+body {
+    padding: 0;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+body {
+    width: 960px;
+    height: 536px;
+    background-color: #6699FF;
+    background-image: url("img/landscape.png");
+    background-repeat: no-repeat;
+    background-position: top center;
+    font-family: fantasy;
+    font-weight: 600;
+}
+
+#gamebox {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+#slider {
+    margin-left: 4%;
+    
+}
+
+.txt {
+    
+    margin-left: -2.5%;
+    
+}
+
+.txt button {
+    width: 10rem;
+    height: 10rem;
+    font-size: 2rem;
+    font-weight: 500;
+    color: gold;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 2.5rem;
+    border: 12px dotted red;
+    border-radius: 50%;
+    padding: 0%;
+    margin-top: 0;
+}
+
+ul {
+    list-style: none;
+    width: 22%;
+    padding: 0;
+}
+
+.txt > li {
+    font-size: 5em;
+    color: rebeccapurple;
+    text-align: center;
+}
+
+.image {
+    display: none;
+}
+
+.fruit_symbol .active {
+    display: block;
+    margin-top: 11rem;
+    margin-left: 5%;
+}
+
+
+.fruit_symbol .activeOne {
+    display: block;
+    margin-top: 11rem;
+    margin-left: 5%;
+}
+
+.fruit_symbol {
+    font-size: 0;
+}
+
+.info {
+    display: none;
+}
+
+.txt .visible {
+    display: block;
+    margin-top: 5rem;
+}
+
+.info:first-child {
+    font-size: 2em;
+    margin-top: 11rem;
+}
+
+#choosing-list {
+    width: 22%;
+    margin-top: 12rem;
+    margin-left: -0.5%;
+    font-size: 2em;
+    text-align: center;
+    color: royalblue;
+}
+
+fieldset {
+   border-radius: 14px; 
+}
+
+label select {
+    background-color: #6699FF;
+    color: gold;
+    font-size: 0.8em;
+    border-radius: 8px;
+}
+button {
+    width: 98px;
+    height: 98px;
+    background-color: transparent;
+    border-radius: 50%;
+    margin-top: 13.5rem;
+    margin-right: 1rem;
+    position: relative;
+}
+
+.btn {
+    position: absolute;
+    margin-top: -3rem;
+    margin-left: -0.5rem;
+}
+
+.effect {
+    transition: all ease-out 0.5s;
+}
+
+.disabled {
+    width: 100%;
+    height: 100%;
+    background-image: url("img/spinBTN_d.png");
+}
+
+.enabled {
+    width: 100%;
+    height: 100%;
+    background-image: url("img/spinBTN.png");
+}
+

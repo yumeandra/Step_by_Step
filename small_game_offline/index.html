@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="eng=UK" />
+
+<head>
+    <meta charset="utf-8" />
+    <title>Match and Win!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script type="text/javascript" src="app.js"></script>
+</head>
+
+<body>
+    <section id="gamebox">
+        <!--animated symbols randomly chosen -->
+        <div id="slider">
+            <ul class="fruit_symbol">
+                <li class="image effect">gold<img src="./img/gold.png" alt="GOLD" /></li>
+                <li></li>
+                <li class="image effect">strawberry<img src="img/strawberry.png" alt="STRAWBERRY" /></li>
+                <li></li>
+                <li class="image effect">pineapple<img src="img/pineapple.png" alt="PINEAPPLE" /></li>
+                <li></li>
+                <li class="image effect">lemon<img src="img/lemon.png" alt="LEMON" /></li>
+                <li></li>
+                <li class="image effect">kiwi<img src="img/kiwi.png" alt="KIWI" /></li>
+                <li></li>
+                <li class="image effect">grapes<img src="img/grapes.png" alt="GRAPES" /></li>
+                <li></li>
+            </ul>
+        </div>
+        <!-- game result information -->
+        <ul class="txt">
+            <li class="info">Choose a fruit from the list and push the spin button</li>
+            <li class="info">YOU WON!
+                <button type="button" id="play1">Play again</button>
+            </li>
+            <li class="info">YOU LOOSE
+                <button type="button" id="play2">Try again!</button>
+            </li>
+        </ul>
+        <!-- list for a gameplayer, one symbol to choose -->
+        <div id="choosing-list">
+            <form id="form">
+                <fieldset>
+                    <label>Choose a fruit:
+                        <br>
+                        <select name="fruit_name" id="select">
+                            <option value="1" class="name">strawberry</option>
+                            <option value="2" class="name">pineapple</option>
+                            <option value="3" class="name">lemon</option>
+                            <option value="4" class="name">kiwi</option>
+                            <option value="5" class="name">grapes</option>
+                            <option value="6" class="name">wild</option>
+                        </select>
+                    </label>
+
+
+                </fieldset>
+            </form>
+
+        </div>
+        <!-- tu powinien być btn spin do uruchomienia gry -->
+        <button type="submit">
+            <div class="btn disabled"></div>
+        </button>
+    </section>
+
+</body>
